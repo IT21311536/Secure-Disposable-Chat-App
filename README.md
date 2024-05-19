@@ -5,6 +5,8 @@ AnonChat is a secure chat app meant to have disposable conversations anonymously
 
 ![image](https://github.com/IT21311536/Secure-Disposable-Chat-App/assets/99274141/1e83644c-a144-4e67-a776-ea5bae4c2108)
 
+## Collaborators
+This project is a culmination of effort put together by `IT21311536` & `IT21357480`.
 
 ## Features
 
