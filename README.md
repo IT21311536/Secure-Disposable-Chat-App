@@ -1,5 +1,10 @@
-# AnonChat
+# AnonChat 😎
 AnonChat is a secure chat app meant to have disposable conversations anonymously built using the Python-flask framework. This has secure features such as end-to-end encryption and once the chat-room session is disposed all the messages will be deleted. This is not meant for default usage of a chat application but only to be used when privacy is a concern.
+
+![WhatsApp Image 2024-05-19 at 04 45 01_43879863](https://github.com/IT21311536/Secure-Disposable-Chat-App/assets/99274141/c423b560-a4fc-49f3-b2a8-f3dad3f60186)
+
+![image](https://github.com/IT21311536/Secure-Disposable-Chat-App/assets/99274141/1e83644c-a144-4e67-a776-ea5bae4c2108)
+
 
 ## Features
 
