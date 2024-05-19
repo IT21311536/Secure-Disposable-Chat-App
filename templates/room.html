@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="room-container">
+    <h1 id="home-header">AnonChat 😎</h1>
+    <div id="room-subsection">
+        <h2 id="room-code-display">Room Code: <span>{{room}}</span></h2>
+        <a href="/" id="leave-chat-btn">Leave the Chat</a>
+    </div>
+
+    <div id="chat-room-widget">
+        <div id="msgs-container">
+            <ul id="messages"></ul>
+        </div>
+        <center>
+        <div id="message-box">  
+            <input type="text" placeholder="Enter your message" id="message-input" name="message" />
+            <button type="submit" id="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </center>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script type="text/javascript">
+        const socketio = io();
+        const key = "{{key}}";  // Get the symmetric key from the server
+
+        function encryptMessage(message) {
+            return CryptoJS.AES.encrypt(message, key).toString();
+        }
+
+        function decryptMessage(encryptedMessage) {
+            const bytes = CryptoJS.AES.decrypt(encryptedMessage, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        function sendMessage() {
+            const msgInput = document.getElementById("message-input");
+            if (msgInput.value === "") return;
+
+            const msg = msgInput.value;
+            const encryptedMessage = encryptMessage(msg);
+            socketio.emit("message", { message: encryptedMessage });
+
+            msgInput.value = "";
+        }
+
+        socketio.on("message", function (data) {
+            const decryptedMessage = decryptMessage(data.message);
+            createChatItem(decryptedMessage, data.sender);
+        });
+
+        function createChatItem(message, sender) {
+            const messages = document.getElementById("messages");
+            const senderIsUser = "{{ user }}" === sender;
+            let senderDisplayName = senderIsUser ? "You" : sender;
+            let content = `
+                <li class="message-item ${senderIsUser ? "self-message-item" : "peer-message-item"}">
+                    <p><strong>${senderDisplayName}:</strong> ${message}</p>
+                    <br>
+                    <small class="${senderIsUser ? "muted-text" : "muted-text-white"}">${new Date().toLocaleString()}</small>
+                </li>
+            `;
+            messages.innerHTML += content;
+      }
+      
+
+        {% for message in messages %}
+        createChatItem("{{message.message}}", "{{message.sender}}");
+        {% endfor %}
+    </script>
+</div>
+{% endblock %}
